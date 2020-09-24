@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace SodaMachine
 {
-    class Program
+    class UserInterface
     {
-        static void Main(string[] args)
+        //member Variables 
+
+        //Constructor
+        public UserInterface()
         {
-            Simulation sim = new Simulation();
-            sim.Run();
+                
         }
+        //member methods
     }
 }
