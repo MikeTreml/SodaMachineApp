@@ -12,12 +12,12 @@ namespace SodaMachine
         protected double value;
         public double Value { get { return value; } }
         public string name;
-        public int quantity;
+       //public int quantity;
 
         //Constructor
-        public Coin(int quantity)
+        public Coin()
         {
-            this.quantity = quantity;
+           // this.quantity = quantity;
         }
         //member methods
     }

@@ -11,11 +11,10 @@ namespace SodaMachine
         //member Variables 
 
         //Constructor
-        public Nickle(int quantity)
-            : base(quantity)
+        public Nickle()
         {
             name = "Nickel";
-            value = .05;
+            value = 0.05;
         }
         //member methods
     }

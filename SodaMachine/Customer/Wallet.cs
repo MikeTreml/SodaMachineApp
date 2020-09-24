@@ -14,7 +14,7 @@ namespace SodaMachine
         //Constructor
         public Wallet()
         {
-            coins = new List<Coin>() { new Quarter(20), new Dime(10), new Nickle(20), new Penny(50) };
+            //coins = new List<Coin>() { new Quarter(), new Dime(), new Nickle(), new Penny() };
             card = new Card();
         }
         //member methods

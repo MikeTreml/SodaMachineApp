@@ -11,11 +11,10 @@ namespace SodaMachine
         //member Variables 
 
         //Constructor
-        public Dime(int quantity)
-            : base(quantity)
+        public Dime()
         {
             name = "Dime";
-            value = .10;
+            value = .10000;
             
         }
         //member methods
