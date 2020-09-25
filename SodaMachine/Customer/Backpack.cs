@@ -10,9 +10,9 @@ namespace SodaMachine
     {
         //member Variables 
         public List<Can> cans;
-        OrangeSoda orangeSoda;
-        RootBeer rootBeer;
-        Cola cola;
+        public OrangeSoda orangeSoda;
+        public RootBeer rootBeer;
+        public Cola cola;
         //Constructor
         public Backpack()
         {
@@ -27,8 +27,11 @@ namespace SodaMachine
             cola = new Cola();
 
         }
+
+
     }
     //member methods
+
 
 
 }

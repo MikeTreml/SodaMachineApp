@@ -6,6 +6,8 @@ namespace SodaMachine
     class Simulation
     {
         //member Variables 
+        public SodaMachine sodaMachine;
+        public Customer customer;
 
         //Constructor
         public Simulation()
@@ -15,46 +17,40 @@ namespace SodaMachine
         //member methods
         public void Run()
         {
-            SodaMachine sodaMachine = new SodaMachine();
+            sodaMachine = new SodaMachine();
+            customer = new Customer();
             Console.BackgroundColor = ConsoleColor.Blue;
             UserInterface.DisplayText("Welcome to Treml's vending service");
             Console.BackgroundColor = ConsoleColor.Black;
             sodaMachine.ShowInventory();
-            UserInterface.SodaMenu();
-            
-           
-
-          
-            
+            sodaMachine.Menu();
+            customer.ShowInventory();
+            UserInterface.CoinInput();
+            ChooseCoinInput();
+            customer.ShowInventory();
             Console.ReadLine();
             
         }
-        public double CoinTotal(List<Coin> coin)
+        public void ChooseCoinInput() 
         {
-            double total = 0;
-            for (int i = 0; i < coin.Count; i++)
+            int quarter=0, dime=0, nickel=0, penny=0;
+            foreach (Coin coin in customer.wallet.coins)
             {
-                Console.WriteLine(coin[i].name + " "+coin[i].Value);
-                total += coin[i].Value;
-                Console.WriteLine(Math.Round(total,2));
+                if (coin.name.Contains("Quarter")) { quarter++; }
+                else if (coin.name.Contains("Dime")) { dime++; }
+                else if (coin.name.Contains("Nickel")) { nickel++; }
+                else if (coin.name.Contains("Penny")) { penny++; }
             }
-            return total;
-        }
-        public static double CoinTotalA(Coin coin)
-        {
-            double total = 0;
-            Console.WriteLine(coin.Value);
-            total += coin.Value;
-            return total;
-        }
-        public double CanTotal(List<Can> can)
-        {
-            double total = 0;
-            for (int i = 0; i < can.Count; i++)
-            {
-                total = can[i].Cost;
-            }
-            return total;
+            quarter = UserInterface.InputVerificationNumbers(1, quarter, "How many quater(s):");
+            dime = UserInterface.InputVerificationNumbers(1, dime, "How many dime(s):");
+            nickel = UserInterface.InputVerificationNumbers(1, nickel, "How many nickel(s):");
+            penny = UserInterface.InputVerificationNumbers(1, penny, "How many penny(s):");
+            UserInterface.TransferCoin(customer.wallet.quarter, quarter, customer.wallet.coins,sodaMachine.payment);
+            UserInterface.TransferCoin(customer.wallet.dime, dime, customer.wallet.coins, sodaMachine.payment);
+            UserInterface.TransferCoin(customer.wallet.nickel, nickel, customer.wallet.coins, sodaMachine.payment);
+            UserInterface.TransferCoin(customer.wallet.penny, penny, customer.wallet.coins, sodaMachine.payment);
+            
+
         }
     }
 }

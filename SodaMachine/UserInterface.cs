@@ -28,21 +28,24 @@ namespace SodaMachine
         {
             Console.WriteLine(text);
         }
-        public static void SodaMenu()
+        public static void SodaChoice()
         {
-            Console.WriteLine(" Press 1 for Cola ($0.35 per can)");
-            Console.WriteLine(" Press 2 for Root Beer ($0.60 per can)");
-            Console.WriteLine(" Press 3 for Orange Soda ($0.06 per can)");
+            Console.WriteLine(" 1 Cola");
+            Console.WriteLine(" 2 Root Beer");
+            Console.WriteLine(" 3 Orange Soda");
+            InputVerificationNumbers(1, 3, "Please select your drink: ");
         }
-        public static void CoinMenu()
+        public static void CoinInput()
         {
-            Console.WriteLine(" Press 1 for Quarter");
-            Console.WriteLine(" Press 2 for Dime");
-            Console.WriteLine(" Press 3 for Nickel");
-            Console.WriteLine( "Press 4 for Penny");
+            Console.WriteLine("Please enter the number of coins you want put in the Soda Machine");
         }
-
-        
+        public static void Menu(double cola,double rootBeer,double OrangeSoda)
+        {
+            Console.WriteLine(" Cola        $"+ cola);
+            Console.WriteLine(" Root Beer   $"+ rootBeer);
+            Console.WriteLine(" Orange Soda $"+ OrangeSoda);
+        }
+                
         public static void CoinsInWallet(int quarter, int dime, int nickel, int penny)
         {
             Console.WriteLine(" The current money in your wallet is:");
@@ -52,19 +55,27 @@ namespace SodaMachine
             Console.WriteLine(" Pennies: "+ penny);
             Console.WriteLine(" Total Amount: $"+ quarter *25+ dime *10+ nickel * 5+ penny);
         }
-        public static void DisplaySodaInventory(int cola, int rootBeer, int orangeSoda, int quarter,int dime,int nickel,int penny)
+
+        public static void InventoryDisplay(int cola, int rootBeer, int orangeSoda, int quarter,int dime,int nickel,int penny,string title)
         {
             double total = quarter * 0.25 + dime * 0.10 + nickel * .5 + penny * .01;
-            Console.WriteLine("The Soda Machine inventory:");
+            Console.WriteLine(title+":");
             Console.WriteLine(" Soda's             Coins");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine(" Cola " + cola + "             Quarters: "+ quarter);
             Console.WriteLine(" Root Beer " + rootBeer + "        Dimes: " + dime);
-            Console.WriteLine(" Orange Soda " + orangeSoda + "     Nickels: " + nickel);
+            Console.WriteLine(" Orange Soda " + orangeSoda + "      Nickels: " + nickel);
             Console.WriteLine("                    Penny: " + penny);
             Console.WriteLine("                    Total Amount: $"+ total+"\n");
 
         }
-
+        public static void TransferCoin(Coin coin, int number, List<Coin> from, List<Coin> to)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                from.Remove(coin);
+                to.Add(coin);
+            }
+        }
     }
 }
