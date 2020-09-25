@@ -22,14 +22,13 @@ namespace SodaMachine
             Console.BackgroundColor = ConsoleColor.Blue;
             UserInterface.DisplayText("Welcome to Treml's vending service");
             Console.BackgroundColor = ConsoleColor.Black;
-            sodaMachine.ShowInventory();
-            sodaMachine.Menu();
-            customer.ShowInventory();
+            UserInterface.ShowSodaMachineInventory(sodaMachine);
+            UserInterface.Menu(sodaMachine);
+            UserInterface.ShowCustomersStuff(customer);
             UserInterface.CoinInput();
             ChooseCoinInput();
-            customer.ShowInventory();
+           
             Console.ReadLine();
-            
         }
         public void ChooseCoinInput() 
         {
@@ -45,11 +44,11 @@ namespace SodaMachine
             dime = UserInterface.InputVerificationNumbers(1, dime, "How many dime(s):");
             nickel = UserInterface.InputVerificationNumbers(1, nickel, "How many nickel(s):");
             penny = UserInterface.InputVerificationNumbers(1, penny, "How many penny(s):");
-            UserInterface.TransferCoin(customer.wallet.quarter, quarter, customer.wallet.coins,sodaMachine.payment);
-            UserInterface.TransferCoin(customer.wallet.dime, dime, customer.wallet.coins, sodaMachine.payment);
-            UserInterface.TransferCoin(customer.wallet.nickel, nickel, customer.wallet.coins, sodaMachine.payment);
-            UserInterface.TransferCoin(customer.wallet.penny, penny, customer.wallet.coins, sodaMachine.payment);
-            
+            Functions.TransferCoin(customer.wallet.quarter, quarter, customer.wallet.coins,sodaMachine.payment);
+            Functions.TransferCoin(customer.wallet.dime, dime, customer.wallet.coins, sodaMachine.payment);
+            Functions.TransferCoin(customer.wallet.nickel, nickel, customer.wallet.coins, sodaMachine.payment);
+            Functions.TransferCoin(customer.wallet.penny, penny, customer.wallet.coins, sodaMachine.payment);
+            UserInterface.SodaChoice(sodaMachine);
 
         }
     }

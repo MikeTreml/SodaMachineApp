@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Customer\Backpack.cs" />
+    <Compile Include="Functions.cs" />
     <Compile Include="Soda\Can.cs" />
     <Compile Include="Customer\Card.cs" />
     <Compile Include="Coins\Coin.cs" />

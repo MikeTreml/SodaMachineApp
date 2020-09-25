@@ -31,25 +31,13 @@ namespace SodaMachine
             dime = new Dime();
             nickel = new Nickel();
             penny = new Penny();
-            AddCoins(quarter, 20);
-            AddCoins(dime, 200);
-            AddCoins(nickel, 50);
-            AddCoins(penny, 20);
+            Functions.CreateCoins(quarter, 9,coins);
+            Functions.CreateCoins(dime, 17, coins);
+            Functions.CreateCoins(nickel, 8, coins);
+            Functions.CreateCoins(penny, 83, coins);
         }
         //member methods
-        public void AddCoins(Coin coin, int number)
-        {
-            for (int i = 0; i < number; i++)
-            {
-                coins.Add(coin);
-            }
-        }
-        public void RemoveCoin(Coin coin, int number)
-        {
-            for (int i = 0; i < number; i++)
-            {
-                coins.Remove(coin);
-            }
-        }
+        
+        
     }
 }
