@@ -12,11 +12,11 @@ namespace SodaMachine
         protected double cost;
         public double Cost { get { return cost; } }
         public string name;
-        public int quantity;
+       
         //Constructor
-        public Can(int quantity)
+        public Can()
         {
-            this.quantity = quantity;
+            
         }
         //member methods
     }

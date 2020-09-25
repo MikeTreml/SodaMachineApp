@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SodaMachine
 {
@@ -19,11 +16,15 @@ namespace SodaMachine
         public void Run()
         {
             SodaMachine sodaMachine = new SodaMachine();
-            //Console.BackgroundColor = ConsoleColor.Blue;
-            //Console.WriteLine(sodaMachine.register[0].name + " " + sodaMachine.register[0].Value);
-            sodaMachine.register.Remove(new Dime());
-            Console.WriteLine(CoinTotal(sodaMachine.register));
-            //Console.WriteLine(CoinTotalA(sodaMachine.register[0]));
+            Console.BackgroundColor = ConsoleColor.Blue;
+            UserInterface.DisplayText("Welcome to Treml's vending service");
+            Console.BackgroundColor = ConsoleColor.Black;
+            sodaMachine.ShowInventory();
+            UserInterface.SodaMenu();
+            
+           
+
+          
             
             Console.ReadLine();
             

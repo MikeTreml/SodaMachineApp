@@ -11,8 +11,7 @@ namespace SodaMachine
         //member Variables 
 
         //Constructor
-        public RootBeer(int quantity)
-            : base(quantity)
+        public RootBeer()
         {
             name = "Root Beer";
             cost = 0.60;

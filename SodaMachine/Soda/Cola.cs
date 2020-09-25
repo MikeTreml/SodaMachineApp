@@ -11,8 +11,7 @@ namespace SodaMachine
         //member Variables 
 
         //Constructor
-        public Cola(int quantity)
-            : base(quantity)
+        public Cola()
         {
             name = "Cola";
             cost = 0.35;

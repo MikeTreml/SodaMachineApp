@@ -11,9 +11,9 @@ namespace SodaMachine
         //member Variables 
         public List<Coin> register;
         public List<Can> inventory;
-        Quarter quarter;
+        public Quarter quarter;
         Dime dime;
-        Nickle nickle;
+        Nickel nickle;
         Penny penny;
         OrangeSoda orangeSoda;
         RootBeer rootBeer;
@@ -22,36 +22,43 @@ namespace SodaMachine
         //Constructor
         public SodaMachine()
         {
-            quarter = new Quarter();
             inventory = new List<Can>();
-            AddCans(new Cola(1), 15);
-            AddCans(new OrangeSoda(1), 15);
-            AddCans(new RootBeer(1), 15);
-
             register = new List<Coin>();
-            AddCoins(quarter, 2);
-            RemoveCoin(quarter, 1);
-            AddCoins(new Dime(), 2);
-            AddCoins(new Nickle(), 2);
-            AddCoins(new Penny(), 5);
-            //RemoveCoin(register.Remove(Quarter), 1);
-           
-            //register1 = new List<Coin>() { new Quarter(), new Dime(), new Nickle(), new Penny() };
-            //inventory1 = new List<Can>() { new OrangeSoda(1), new RootBeer(2), new Cola(2) };
-
+            fillSodaMachine();
         }
         //member methods
-        public void RemoveCoin(Coin coin, int number)
+        public void fillSodaMachine()
         {
-            register.Remove(coin);
-           
 
+            quarter = new Quarter();
+            dime = new Dime();
+            nickle = new Nickel();
+            penny = new Penny();
+            orangeSoda = new OrangeSoda();
+            rootBeer = new RootBeer();
+            cola = new Cola();
+            AddCans(cola, 5);
+            AddCans(orangeSoda, 10);
+            AddCans(rootBeer, 1);
+
+            AddCoins(quarter, 20);
+            AddCoins(dime, 10);
+            AddCoins(nickle, 20);
+            AddCoins(penny, 50);
         }
+
         public void AddCans(Can soda, int number)
         {
             for (int i = 0; i < number; i++)
             {
                 inventory.Add(soda);
+            }
+        }
+        public void RemoveCans(Can soda, int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                inventory.Remove(soda);
             }
         }
         public void AddCoins(Coin coin, int number)
@@ -60,6 +67,31 @@ namespace SodaMachine
             {
                 register.Add(coin);
             }
+        }
+        public void RemoveCoin(Coin coin, int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                register.Remove(coin);
+            }
+        }
+        public void ShowInventory()
+        {
+            int cola = 0, rootBeer = 0, orangeSoda = 0, quarter = 0, dime = 0, nickel = 0, penny = 0;
+            foreach (Can can in inventory)
+            {
+                if (can.name.Contains("Cola")) { cola++; }
+                else if (can.name.Contains("Root Beer")) { rootBeer++; }
+                else if (can.name.Contains("Orange Soda")) { orangeSoda++; }
+            }
+            foreach (Coin coin in register)
+            {
+                if (coin.name.Contains("Quarter")) { quarter++; }
+                else if (coin.name.Contains("Dime")) { dime++; }
+                else if (coin.name.Contains("Nickel")) { nickel++; }
+                else if (coin.name.Contains("Penny")) { penny++; }
+            }
+            UserInterface.DisplaySodaInventory(cola, rootBeer, orangeSoda, quarter, dime, nickel, penny);
         }
     }
 }

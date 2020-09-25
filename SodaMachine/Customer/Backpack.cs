@@ -10,12 +10,26 @@ namespace SodaMachine
     {
         //member Variables 
         public List<Can> cans;
+        OrangeSoda orangeSoda;
+        RootBeer rootBeer;
+        Cola cola;
         //Constructor
         public Backpack()
         {
-            cans = new List<Can>() { new OrangeSoda(0), new RootBeer(0), new Cola(0) };
+            FillBackBack();
+        }
+
+        void FillBackBack()
+        {
+            cans = new List<Can>();
+            orangeSoda = new OrangeSoda();
+            rootBeer = new RootBeer();
+            cola = new Cola();
+
         }
     }
     //member methods
+
+
 }
 
