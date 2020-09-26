@@ -9,7 +9,7 @@ namespace SodaMachine
     class Wallet
     {
         //member Variables 
-        public List<Coin> coins;
+        public List<Coin> coin;
         public Card card;
         public Quarter quarter;
         public Dime dime;
@@ -20,7 +20,7 @@ namespace SodaMachine
         public Wallet()
         {
             
-            coins = new List<Coin>();
+            coin = new List<Coin>();
             card = new Card();
             FillWallet();
         }
@@ -31,10 +31,10 @@ namespace SodaMachine
             dime = new Dime();
             nickel = new Nickel();
             penny = new Penny();
-            Functions.CreateCoins(quarter, 9,coins);
-            Functions.CreateCoins(dime, 17, coins);
-            Functions.CreateCoins(nickel, 8, coins);
-            Functions.CreateCoins(penny, 83, coins);
+            Functions.CreateCoins(quarter, 9,coin);
+            Functions.CreateCoins(dime, 17, coin);
+            Functions.CreateCoins(nickel, 8, coin);
+            Functions.CreateCoins(penny, 83, coin);
         }
         //member methods
         

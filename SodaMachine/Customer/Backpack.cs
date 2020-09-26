@@ -9,7 +9,7 @@ namespace SodaMachine
     class Backpack
     {
         //member Variables 
-        public List<Can> cans;
+        public List<Can> can;
         public OrangeSoda orangeSoda;
         public RootBeer rootBeer;
         public Cola cola;
@@ -21,7 +21,7 @@ namespace SodaMachine
 
         void FillBackBack()
         {
-            cans = new List<Can>();
+            can = new List<Can>();
             orangeSoda = new OrangeSoda();
             rootBeer = new RootBeer();
             cola = new Cola();

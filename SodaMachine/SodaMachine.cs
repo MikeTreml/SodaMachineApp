@@ -48,76 +48,34 @@ namespace SodaMachine
             Functions.CreateCoins(nickel, 20, register);//20
             Functions.CreateCoins(penny, 50, register);//50
         }
-
-        public void ReturnMoney()
+        public void ShowSodaMachineStuff()
         {
+            string title = "\nThe Soda Machine inventory";
+            int[] sodaQty = Functions.CanListCount(inventory);
+            int[] coinQty = Functions.CoinListCount(register);
+            double payment = paymentTotal();
+            UserInterface.SodaMachineInventoryDisplay(sodaQty, coinQty, title, payment);
+            
 
         }
-        public double CustomerPaymentAmount()
+        public void Menu()
         {
-            double paymentAmount = 0;
-            foreach (Coin coin in payment)
-            {
-                if (coin.name.Contains("Quarter")) { paymentAmount += quarter.Value; }
-                else if (coin.name.Contains("Dime")) { paymentAmount += dime.Value; }
-                else if (coin.name.Contains("Nickel")) { paymentAmount += nickel.Value; }
-                else if (coin.name.Contains("Penny")) { paymentAmount += penny.Value; }
-            }
-            return paymentAmount;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\n   ************************");
+            Console.WriteLine("   *  Cola        $" + cola.Cost);
+            Console.WriteLine("   *  Root Beer   $" + rootBeer.Cost);
+            Console.WriteLine("   *  Orange Soda $" + orangeSoda.Cost);
+            Console.WriteLine("   ************************");
+            Console.ForegroundColor = ConsoleColor.White;
         }
-        public bool HandlePayment(double paymentAmount)
+        public double paymentTotal()
         {
-            double[] sodaPrices = {cola.Cost, rootBeer.Cost,orangeSoda.Cost};
-            Can[] soda = { cola, rootBeer, orangeSoda };
-            int choice = UserInterface.InputVerificationNumbers(1, 3, "Please select your drink: ") - 1;
-            double cost = sodaPrices[choice];
-            if (cost == paymentAmount) 
-            { 
-                
-                //Transfer soda to backack 
-            }
-            else if ( cost < paymentAmount) 
-            {
-                Functions.TransferCoin()
-                //transfer payment to vending machine
-                //Transfer soda to backack 
-                //refund payment cost difference
-            }
-            else if (cost>paymentAmount)
-            {
-                //transfer paymnet back to wallet
-                
-            }
-
-
-            return true;
+            double paymentTotal;
+            int[] paymentArray;
+            paymentArray = Functions.CoinListCount(payment);
+            paymentTotal = paymentArray[0] * quarter.Value + paymentArray[1] * dime.Value + paymentArray[2] * nickel.Value + paymentArray[3] * penny.Value;
+            return paymentTotal;
         }
 
-        public void ShowSodaMachineInventory(SodaMachine sodaMachine)
-        {
-            //soda 0 cola, 1 rootbeer, 2 orangesoda
-            int[] sodaQty = { 0, 0, 0 };
-            int[] coinQty = { 0, 0, 0, 0 };
-
-            string title = "The Soda Machine inventory";
-            foreach (Can can in sodaMachine.inventory)
-            {
-                //sodaQty Array 0 cola, 1 rootbeer, 2 orangesoda
-                if (can.name.Contains("Cola")) { sodaQty[0]++; }
-                else if (can.name.Contains("Root Beer")) { sodaQty[1]++; }
-                else if (can.name.Contains("Orange Soda")) { sodaQty[2]++; }
-            }
-
-            foreach (Coin coin in sodaMachine.register)
-            {
-                //coinQty Array 0 quarter, 1 dime, 2 nickel, 3 penny
-                if (coin.name.Contains("Quarter")) { coinQty[0]++; }
-                else if (coin.name.Contains("Dime")) { coinQty[1]++; }
-                else if (coin.name.Contains("Nickel")) { coinQty[2]++; }
-                else if (coin.name.Contains("Penny")) { coinQty[3]++; }
-            }
-
-            UserInterface.InventoryDisplay(sodaQty, coinQty, title);
-        }
     }
 }
