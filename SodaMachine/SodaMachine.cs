@@ -30,7 +30,7 @@ namespace SodaMachine
             fillSodaMachine();
         }
         //member methods
-        public void fillSodaMachine()
+        private void fillSodaMachine()
         {
             quarter = new Quarter();
             dime = new Dime();

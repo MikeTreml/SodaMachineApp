@@ -6,8 +6,8 @@ namespace SodaMachine
     class Simulation
     {
         //member Variables 
-        public SodaMachine sodaMachine;
-        public Customer customer;
+        SodaMachine sodaMachine;
+        Customer customer;
 
         //Constructor
         public Simulation()
@@ -24,15 +24,15 @@ namespace SodaMachine
             {
                 sodaMachine.ShowSodaMachineStuff();
                 sodaMachine.Menu();
-
                 customer.ShowCustomersStuff(customer);
                 UserInterface.CoinInput();
                 ChoosingCoinToInput();
-                //Console.Clear();
+                //Console.Clear(); //comment this for deguging for history of transactions
                 sodaMachine.ShowSodaMachineStuff();
                 customer.ShowCustomersStuff(customer);
                 UserInterface.SodaChoice(sodaMachine.paymentTotal());
-                HandlePayment(sodaMachine.paymentTotal());
+
+                CustomerSodaChoice();
 
 
                 Console.ReadLine();
@@ -40,7 +40,7 @@ namespace SodaMachine
 
         }
 
-        public void ChoosingCoinToInput()
+        private void ChoosingCoinToInput()
         {
 
             int[] coinCount = Functions.CoinListCount(customer.wallet.coin);
@@ -51,87 +51,134 @@ namespace SodaMachine
             coinPayment[1] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[1], "How many dime(s):");
             coinPayment[2] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[2], "How many nickel(s):");
             coinPayment[3] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[3], "How many penny(s):");
-            Functions.TransferCoin(customer.wallet.quarter, sodaMachine.quarter, coinPayment[0], customer.wallet.coin, sodaMachine.payment);
-            Functions.TransferCoin(customer.wallet.dime, sodaMachine.dime, coinPayment[1], customer.wallet.coin, sodaMachine.payment);
-            Functions.TransferCoin(customer.wallet.nickel, sodaMachine.nickel, coinPayment[2], customer.wallet.coin, sodaMachine.payment);
-            Functions.TransferCoin(customer.wallet.penny, sodaMachine.penny, coinPayment[3], customer.wallet.coin, sodaMachine.payment);
+            WalletToPayment(coinPayment);
         }
-        public bool HandlePayment(double paymentAmount)
+        private void CustomerSodaChoice()
         {
-            int[] countCount = Functions.CoinListCount(sodaMachine.payment);
+            int[] coinCount = Functions.CoinListCount(sodaMachine.payment);
+            int[] sodaCount = Functions.CanListCount(sodaMachine.inventory);
+            int choice = UserInterface.InputVerificationNumbers(1, 3, "Please select your drink: ") - 1;
+            double paymentAmount = Math.Round(sodaMachine.paymentTotal(), 2);
+
+            if (sodaCount[choice] > 0)
+            {
+                HandlePayment(choice, paymentAmount);
+            }
+            else
+            {
+                Console.WriteLine("Sorry your choice is out of stock. " + paymentAmount + " will be refunded");
+                PaymentToWallet(coinCount);
+            }
+
+        }
+        private void HandlePayment(int choice, double paymentAmount)
+        {
+            int[] coinPayment = Functions.CoinListCount(sodaMachine.payment);
             int[] sodaSelect = { 0, 0, 0 };
+            
             double[] sodaPrices = { sodaMachine.cola.Cost, sodaMachine.rootBeer.Cost, sodaMachine.orangeSoda.Cost };
             Can[] soda = { sodaMachine.cola, sodaMachine.rootBeer, sodaMachine.orangeSoda };
-            int choice = UserInterface.InputVerificationNumbers(1, 3, "Please select your drink: ") - 1;
+
             sodaSelect[choice] = 1;
             double cost = sodaPrices[choice];
 
             if (cost <= paymentAmount)
             {
-                Functions.TransferCoin(sodaMachine.quarter, countCount[0], sodaMachine.payment, sodaMachine.register);
-                Functions.TransferCoin(sodaMachine.dime, countCount[1], sodaMachine.payment, sodaMachine.register);
-                Functions.TransferCoin(sodaMachine.nickel, countCount[2], sodaMachine.payment, sodaMachine.register);
-                Functions.TransferCoin(sodaMachine.penny, countCount[3], sodaMachine.payment, sodaMachine.register);
-                Functions.TransferCan(sodaMachine.cola, sodaSelect[0], sodaMachine.inventory, customer.backpack.can);
-                Functions.TransferCan(sodaMachine.rootBeer, sodaSelect[1], sodaMachine.inventory, customer.backpack.can);
-                Functions.TransferCan(sodaMachine.orangeSoda, sodaSelect[2], sodaMachine.inventory, customer.backpack.can);
                 if (cost == paymentAmount)
                 {
+                    PaymentToRegister(coinPayment);
+                    InventoryToBackPack(sodaSelect);
                     Console.WriteLine("Thank you for use exact change");
                 }
 
                 if (cost < paymentAmount)
                 {
-                    double change = paymentAmount - cost;
-                    GiveChangeBack(Math.Round(change,2));
-                    Console.WriteLine("Thank you for your purchase.");
+                    double changeAmount = Math.Round(paymentAmount - cost);
+                    int[] coinRefund = CalculateChange(Math.Round(changeAmount, 2));
+                    double totalAvailableCoins = coinRefund[0] * sodaMachine.quarter.Value + coinRefund[1] * sodaMachine.dime.Value + coinRefund[2] * sodaMachine.nickel.Value + coinRefund[3] * sodaMachine.penny.Value;
+                    if (changeAmount == totalAvailableCoins)
+                    {
+                        PaymentToRegister(coinPayment);
+                        InventoryToBackPack(sodaSelect);
+                        RegisterToWallet(coinRefund);
+                        Console.WriteLine("Thank you for your purchase.");
+                    }
+                    else
+                    {
+                        PaymentToWallet(coinPayment);
+                        Console.WriteLine("Sorry. Unable to provide change for your selection.");
+                    }
                 }
             }
             else if (cost > paymentAmount)
             {
 
-                Functions.TransferCoin(sodaMachine.quarter, customer.wallet.quarter, countCount[0], sodaMachine.payment, customer.wallet.coin);
-                Functions.TransferCoin(sodaMachine.dime, customer.wallet.dime, countCount[1], sodaMachine.payment, customer.wallet.coin);
-                Functions.TransferCoin(sodaMachine.nickel, customer.wallet.nickel, countCount[2], sodaMachine.payment, customer.wallet.coin);
-                Functions.TransferCoin(sodaMachine.penny, customer.wallet.penny, countCount[3], sodaMachine.payment, customer.wallet.coin);
+                PaymentToWallet(coinPayment);
                 Console.WriteLine("You did put in enough money. Your money has been returned");
 
             }
-            return true;
+
         }
-        public void GiveChangeBack(double refund)
+        private int[] CalculateChange(double refund)
         {
             double tempValueRefund;
             //int[] countCount = sodaMachine.CoinListCount();
             int[] countCountRegister = Functions.CoinListCount(sodaMachine.register);
-            int quarterNumber = 0, dimeNumber = 0, nickelNumber = 0, pennyNumber = 0;
+            int[] coins = {0,0,0,0 };
 
-            quarterNumber = (int)Math.Floor(refund / .25);
-            if (quarterNumber > countCountRegister[0]) { quarterNumber = countCountRegister[0]; }
-            tempValueRefund = Math.Round(refund - quarterNumber * .25,2);
+            coins[0] = (int)Math.Floor(refund / sodaMachine.quarter.Value);
+            if (coins[0] > countCountRegister[0]) { coins[0] = countCountRegister[0]; }
+            tempValueRefund = Math.Round(refund - coins[0] * sodaMachine.quarter.Value, 2);
 
-            dimeNumber = (int)Math.Floor(tempValueRefund / .1);
-            if (dimeNumber > countCountRegister[1]) { dimeNumber = countCountRegister[1]; }
-            tempValueRefund = Math.Round(tempValueRefund - dimeNumber * .1,2);
+            coins[1] = (int)Math.Floor(tempValueRefund / sodaMachine.dime.Value);
+            if (coins[1] > countCountRegister[1]) { coins[1] = countCountRegister[1]; }
+            tempValueRefund = Math.Round(tempValueRefund - coins[1] * sodaMachine.dime.Value, 2);
 
-            nickelNumber = (int)Math.Floor(tempValueRefund / .05);
-            if (nickelNumber > countCountRegister[2]) { nickelNumber = countCountRegister[2]; }
-            tempValueRefund = Math.Round(tempValueRefund - nickelNumber * .05,2);
+            coins[2] = (int)Math.Floor(tempValueRefund / sodaMachine.nickel.Value);
+            if (coins[2] > countCountRegister[2]) { coins[2] = countCountRegister[2]; }
+            tempValueRefund = Math.Round(tempValueRefund - coins[2] * sodaMachine.nickel.Value, 2);
 
-            pennyNumber = (int)Math.Floor(tempValueRefund / .01);
-            if (pennyNumber > countCountRegister[3]) { pennyNumber = countCountRegister[3]; }
-            tempValueRefund = Math.Round(tempValueRefund - pennyNumber * .01,2);
+            coins[3] = (int)Math.Floor(tempValueRefund / sodaMachine.penny.Value);
+            if (coins[3] > countCountRegister[3]) { coins[3] = countCountRegister[3]; }
+            tempValueRefund = Math.Round(tempValueRefund - coins[3] * sodaMachine.penny.Value, 2);
 
-            if (tempValueRefund == 0) { Console.WriteLine("Refund Error "+ tempValueRefund); }
-
-
-            Functions.TransferCoin(sodaMachine.quarter, customer.wallet.quarter, quarterNumber, sodaMachine.register, customer.wallet.coin);
-            Functions.TransferCoin(sodaMachine.dime, customer.wallet.dime, dimeNumber, sodaMachine.register, customer.wallet.coin);
-            Functions.TransferCoin(sodaMachine.nickel, customer.wallet.nickel, nickelNumber, sodaMachine.register, customer.wallet.coin);
-            Functions.TransferCoin(sodaMachine.penny, customer.wallet.penny, pennyNumber, sodaMachine.register, customer.wallet.coin);
-            Console.WriteLine("Your change is  "+ quarterNumber + " quaters  "+ dimeNumber + " dimes  "+ nickelNumber + " nickels  "+ pennyNumber + " penny");
-            double total = quarterNumber * .25 + dimeNumber * .1 + nickelNumber * .05 + pennyNumber * .01;
-            Console.WriteLine(total +" compare "+ refund);
+            if (tempValueRefund != 0) { Console.WriteLine("Refund Error "+ tempValueRefund); }
+            return coins;
         }
-    }
+        private void InventoryToBackPack(int[] soda)
+        {
+            Functions.TransferCan(sodaMachine.cola, soda[0], sodaMachine.inventory, customer.backpack.can);
+            Functions.TransferCan(sodaMachine.rootBeer, soda[1], sodaMachine.inventory, customer.backpack.can);
+            Functions.TransferCan(sodaMachine.orangeSoda, soda[2], sodaMachine.inventory, customer.backpack.can);
+        }
+        private void WalletToPayment(int[] coins)
+        {
+            Functions.TransferCoin(customer.wallet.quarter, sodaMachine.quarter, coins[0], customer.wallet.coin, sodaMachine.payment);
+            Functions.TransferCoin(customer.wallet.dime, sodaMachine.dime, coins[1], customer.wallet.coin, sodaMachine.payment);
+            Functions.TransferCoin(customer.wallet.nickel, sodaMachine.nickel, coins[2], customer.wallet.coin, sodaMachine.payment);
+            Functions.TransferCoin(customer.wallet.penny, sodaMachine.penny, coins[3], customer.wallet.coin, sodaMachine.payment);
+        }
+        private void PaymentToRegister(int[] coins)
+        {
+            Functions.TransferCoin(sodaMachine.quarter, coins[0], sodaMachine.payment, sodaMachine.register);
+            Functions.TransferCoin(sodaMachine.dime, coins[1], sodaMachine.payment, sodaMachine.register);
+            Functions.TransferCoin(sodaMachine.nickel, coins[2], sodaMachine.payment, sodaMachine.register);
+            Functions.TransferCoin(sodaMachine.penny, coins[3], sodaMachine.payment, sodaMachine.register);
+        }
+        private void RegisterToWallet(int[] coins)
+        {
+            Functions.TransferCoin(sodaMachine.quarter, customer.wallet.quarter, coins[0], sodaMachine.register, customer.wallet.coin);
+            Functions.TransferCoin(sodaMachine.dime, customer.wallet.dime, coins[1], sodaMachine.register, customer.wallet.coin);
+            Functions.TransferCoin(sodaMachine.nickel, customer.wallet.nickel, coins[2], sodaMachine.register, customer.wallet.coin);
+            Functions.TransferCoin(sodaMachine.penny, customer.wallet.penny, coins[3], sodaMachine.register, customer.wallet.coin);
+
+        }
+        private void PaymentToWallet(int[] coins)
+        {
+            Functions.TransferCoin(sodaMachine.quarter, customer.wallet.quarter, coins[0], sodaMachine.payment, customer.wallet.coin);
+            Functions.TransferCoin(sodaMachine.dime, customer.wallet.dime, coins[1], sodaMachine.payment, customer.wallet.coin);
+            Functions.TransferCoin(sodaMachine.nickel, customer.wallet.nickel, coins[2], sodaMachine.payment, customer.wallet.coin);
+            Functions.TransferCoin(sodaMachine.penny, customer.wallet.penny, coins[3], sodaMachine.payment, customer.wallet.coin);
+        }
+        }
 }

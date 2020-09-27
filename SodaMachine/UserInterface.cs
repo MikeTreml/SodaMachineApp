@@ -8,10 +8,10 @@ namespace SodaMachine
 {
     static class UserInterface
     {
-        public static Quarter quater = new Quarter();
-        public static Dime dime = new Dime();
-        public static Nickel nickel = new Nickel();
-        public static Penny penny = new Penny();
+        static Quarter quater = new Quarter();
+        static Dime dime = new Dime();
+        static Nickel nickel = new Nickel();
+        static Penny penny = new Penny();
        
         
         public static int InputVerificationNumbers(int min, int max, string prompt)
