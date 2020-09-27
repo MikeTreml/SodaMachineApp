@@ -8,12 +8,23 @@ namespace SodaMachine
 {
     static class Functions
     {
+
         public static void TransferCoin(Coin coin, int number, List<Coin> from, List<Coin> to)
         {
             for (int i = 0; i < number; i++)
             {
                 from.Remove(coin);
                 to.Add(coin);
+            }
+        }
+        // need to overload this method. I can send it Sodamachine.coins to wallet. but if i am pulling wallet.coins i am never 
+        //pulling the Sodamachine.coins. so i need to got through one extra step and add in the coin type for wallet and sodamachine
+        public static void TransferCoin(Coin coinFrom, Coin coinTo, int number, List<Coin> from, List<Coin> to)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                from.Remove(coinFrom);
+                to.Add(coinTo);
             }
         }
         public static void TransferCan(Can can, int number, List<Can> from, List<Can> to)

@@ -50,12 +50,13 @@ namespace SodaMachine
         }
         public void ShowSodaMachineStuff()
         {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             string title = "\nThe Soda Machine inventory";
             int[] sodaQty = Functions.CanListCount(inventory);
             int[] coinQty = Functions.CoinListCount(register);
             double payment = paymentTotal();
             UserInterface.SodaMachineInventoryDisplay(sodaQty, coinQty, title, payment);
-            
+            Console.ForegroundColor = ConsoleColor.White;
 
         }
         public void Menu()

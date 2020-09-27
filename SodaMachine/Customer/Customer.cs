@@ -22,10 +22,14 @@ namespace SodaMachine
         
         public void ShowCustomersStuff(Customer customer)
         {
-            string title = "\nCustomer Inventory";
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            string title = "\nCustomer Inventory               ";
             int[] sodaQty = Functions.CanListCount(backpack.can);
             int[] coinQty = Functions.CoinListCount(wallet.coin);
             UserInterface.CustomerInventoryDisplay(sodaQty, coinQty, title);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
     }

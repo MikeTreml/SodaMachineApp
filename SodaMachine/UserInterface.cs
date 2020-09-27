@@ -8,10 +8,10 @@ namespace SodaMachine
 {
     static class UserInterface
     {
-        static Quarter quater = new Quarter();
-        static Dime dime = new Dime();
-        static Nickel nickel = new Nickel();
-        static Penny penny = new Penny();
+        public static Quarter quater = new Quarter();
+        public static Dime dime = new Dime();
+        public static Nickel nickel = new Nickel();
+        public static Penny penny = new Penny();
        
         
         public static int InputVerificationNumbers(int min, int max, string prompt)
@@ -59,7 +59,7 @@ namespace SodaMachine
 
         public static void SodaMachineInventoryDisplay(int[] sodaQty, int[] coinQty, string title,double payment)
         {
-            double total = coinQty[0] * quater.Value + coinQty[1] * dime.Value + coinQty[2] * dime.Value + coinQty[3] * penny.Value;
+            double total = coinQty[0] * quater.Value + coinQty[1] * dime.Value + coinQty[2] * nickel.Value + coinQty[3] * penny.Value;
             Console.WriteLine(title + ":");
             Console.WriteLine(" Soda's             Coins");
             Console.WriteLine("-----------------------------------");
@@ -72,15 +72,15 @@ namespace SodaMachine
         }
         public static void CustomerInventoryDisplay(int[] sodaQty, int[] coinQty, string title)
         {
-            double total = coinQty[0] * quater.Value + coinQty[1] * dime.Value + coinQty[2] * dime.Value + coinQty[3] * penny.Value;
+            double total = coinQty[0] * quater.Value + coinQty[1] * dime.Value + coinQty[2] * nickel.Value + coinQty[3] * penny.Value;
             Console.WriteLine(title + ":");
-            Console.WriteLine(" Soda's             Coins");
+            Console.WriteLine(" Soda's             Coins          ");
             Console.WriteLine("-----------------------------------");
-            Console.WriteLine(" Cola " + sodaQty[0] + "             Quarters: " + coinQty[0]);
-            Console.WriteLine(" Root Beer " + sodaQty[1] + "        Dimes: " + coinQty[1]);
-            Console.WriteLine(" Orange Soda " + sodaQty[2] + "      Nickels: " + coinQty[2]);
-            Console.WriteLine("                    Penny: " + coinQty[3]);
-            Console.WriteLine("                    Total Amount: $" + total + "\n");
+            Console.WriteLine(" Cola " + sodaQty[0] + "             Quarters: " + coinQty[0]+"    ");
+            Console.WriteLine(" Root Beer " + sodaQty[1] + "        Dimes: " + coinQty[1] + "      ");
+            Console.WriteLine(" Orange Soda " + sodaQty[2] + "      Nickels: " + coinQty[2] + "     ");
+            Console.WriteLine("                    Penny: " + coinQty[3] + "      ");
+            Console.WriteLine("           Total Amount: $" + total + "  \n");
 
         }
 
