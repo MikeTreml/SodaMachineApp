@@ -100,7 +100,7 @@ namespace SodaMachine
         public static string LeaveSodaMachine() 
         {
             string input;
-            Console.WriteLine("please press q to leave");
+            Console.WriteLine("Please press q to leave or any key to continue");
             input = Console.ReadLine();
             return input.ToLower();
         }

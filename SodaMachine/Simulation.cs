@@ -26,15 +26,11 @@ namespace SodaMachine
                 sodaMachine.Menu();
                 UserInterface.ShowCustomersStuff(customer);
                 PickPaymentType();
-
                 //Console.Clear(); //comment this for deguging for history of transactions
                 UserInterface.ShowSodaMachineStuff(sodaMachine);
                 UserInterface.ShowCustomersStuff(customer);
-               
-
-                
-                UserInterface.LeaveSodaMachine();
-            } while (leave == "q");
+                leave = UserInterface.LeaveSodaMachine();
+            } while (leave != "q");
 
         }
         private void PickPaymentType()
@@ -43,23 +39,19 @@ namespace SodaMachine
             {
                 case 1:
                     ChoosingPayInput();
-                    
                     break;
                 case 2:
                     ChoosingPayInput(Functions.CoinListCount(customer.wallet.coin));
                     UserInterface.SodaChoice(sodaMachine.paymentTotal());
                     CustomerSodaChoice();
                     break;
-
             }
         }
         private void ChoosingPayInput()
         {
-            //Card Payment
             UserInterface.SodaChoice(customer.wallet.card.AvailableFunds);
             int choice = UserInterface.InputVerificationNumbers(1, 3, "Please select your drink: ") - 1;
             HandlePayment(choice, customer.wallet.card.AvailableFunds, true);
-
         }
         private void ChoosingPayInput(int[] coinCount)
         {
