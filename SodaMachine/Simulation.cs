@@ -8,7 +8,7 @@ namespace SodaMachine
         //member Variables 
         SodaMachine sodaMachine;
         Customer customer;
-
+        string leave = "";
         //Constructor
         public Simulation()
         {
@@ -22,37 +22,62 @@ namespace SodaMachine
             UserInterface.DisplayText("Welcome to Treml's vending service");
             do
             {
-                sodaMachine.ShowSodaMachineStuff();
+                UserInterface.ShowSodaMachineStuff(sodaMachine);
                 sodaMachine.Menu();
-                customer.ShowCustomersStuff(customer);
-                UserInterface.CoinInput();
-                ChoosingCoinToInput();
+                UserInterface.ShowCustomersStuff(customer);
+                PickPaymentType();
+                
                 //Console.Clear(); //comment this for deguging for history of transactions
-                sodaMachine.ShowSodaMachineStuff();
-                customer.ShowCustomersStuff(customer);
+                UserInterface.ShowSodaMachineStuff(sodaMachine);
+                UserInterface.ShowCustomersStuff(customer);
                 UserInterface.SodaChoice(sodaMachine.paymentTotal());
 
                 CustomerSodaChoice();
-
-
-                Console.ReadLine();
-            } while (true);
+                UserInterface.LeaveSodaMachine();
+            } while (leave != "q");
 
         }
-
-        private void ChoosingCoinToInput()
+        private void PickPaymentType() 
         {
+            switch (UserInterface.InputVerificationNumbers(1, 2, "Please pick paymet type 1 for card 2 for coins."))
+            {
+                case 1:
+                    ChoosingPayInput();
+                    break;
+                case 2:
+                    ChoosingPayInput(0);
+                    break;
 
+            }
+        }
+        private void ChoosingPayInput()
+        {
+            ////UserInterface.CoinInput();
+            ////int[] coinCount = Functions.CoinListCount(customer.wallet.coin);
+            ////int[] coinPayment = { 0, 0, 0, 0 };
+
+
+            ////coinPayment[0] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[0], "How many quater(s):");
+            ////coinPayment[1] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[1], "How many dime(s):");
+            ////coinPayment[2] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[2], "How many nickel(s):");
+            ////coinPayment[3] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[3], "How many penny(s):");
+            ////WalletToPayment(coinPayment);
+        }
+        private void ChoosingPayInput(Customer wallet)
+        {
+            UserInterface.CoinInput();
             int[] coinCount = Functions.CoinListCount(customer.wallet.coin);
             int[] coinPayment = { 0, 0, 0, 0 };
-            int lowestnumber = 0;
+            int lowestNumber = 0;
 
-            coinPayment[0] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[0], "How many quater(s):");
-            coinPayment[1] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[1], "How many dime(s):");
-            coinPayment[2] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[2], "How many nickel(s):");
-            coinPayment[3] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[3], "How many penny(s):");
+
+            coinPayment[0] = UserInterface.InputVerificationNumbers(lowestNumber, coinCount[0], "How many quater(s):");
+            coinPayment[1] = UserInterface.InputVerificationNumbers(lowestNumber, coinCount[1], "How many dime(s):");
+            coinPayment[2] = UserInterface.InputVerificationNumbers(lowestNumber, coinCount[2], "How many nickel(s):");
+            coinPayment[3] = UserInterface.InputVerificationNumbers(lowestNumber, coinCount[3], "How many penny(s):");
             WalletToPayment(coinPayment);
         }
+
         private void CustomerSodaChoice()
         {
             int[] coinCount = Functions.CoinListCount(sodaMachine.payment);
