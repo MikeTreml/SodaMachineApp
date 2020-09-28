@@ -27,6 +27,13 @@ namespace SodaMachine
                 to.Add(coinTo);
             }
         }
+        public static void TransferCard(Card cardFrom, Card cardTo, double number)
+        {
+
+            cardFrom.AvailableFunds -= number;
+            cardTo.AvailableFunds += number;
+
+        }
         public static void TransferCan(Can can, int number, List<Can> from, List<Can> to)
         {
             for (int i = 0; i < number; i++)

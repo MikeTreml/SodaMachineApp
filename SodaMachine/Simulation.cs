@@ -30,11 +30,11 @@ namespace SodaMachine
                 //Console.Clear(); //comment this for deguging for history of transactions
                 UserInterface.ShowSodaMachineStuff(sodaMachine);
                 UserInterface.ShowCustomersStuff(customer);
-                UserInterface.SodaChoice(sodaMachine.paymentTotal());
+               
 
-                CustomerSodaChoice();
+                
                 UserInterface.LeaveSodaMachine();
-            } while (leave != "q");
+            } while (leave == "q");
 
         }
         private void PickPaymentType()
@@ -43,9 +43,12 @@ namespace SodaMachine
             {
                 case 1:
                     ChoosingPayInput();
+                    
                     break;
                 case 2:
                     ChoosingPayInput(Functions.CoinListCount(customer.wallet.coin));
+                    UserInterface.SodaChoice(sodaMachine.paymentTotal());
+                    CustomerSodaChoice();
                     break;
 
             }
@@ -53,6 +56,9 @@ namespace SodaMachine
         private void ChoosingPayInput()
         {
             //Card Payment
+            UserInterface.SodaChoice(customer.wallet.card.AvailableFunds);
+            int choice = UserInterface.InputVerificationNumbers(1, 3, "Please select your drink: ") - 1;
+            HandlePayment(choice, customer.wallet.card.AvailableFunds, true);
 
         }
         private void ChoosingPayInput(int[] coinCount)
@@ -76,7 +82,7 @@ namespace SodaMachine
 
             if (sodaCount[choice] > 0)
             {
-                HandlePayment(choice, paymentAmount);
+                HandlePayment(choice, paymentAmount, false);
             }
             else
             {
@@ -85,7 +91,7 @@ namespace SodaMachine
             }
 
         }
-        private void HandlePayment(int choice, double paymentAmount)
+        private void HandlePayment(int choice, double paymentAmount, bool card)
         {
             int[] coinPayment = Functions.CoinListCount(sodaMachine.payment);
             int[] sodaSelect = { 0, 0, 0 };
@@ -95,8 +101,20 @@ namespace SodaMachine
 
             sodaSelect[choice] = 1;
             double cost = sodaPrices[choice];
-
-            if (cost <= paymentAmount)
+            if(card)
+            {
+                if (paymentAmount > sodaPrices[choice])
+                {
+                    //go through with purchase
+                    CardToCard(sodaPrices[choice]);
+                    InventoryToBackPack(sodaSelect);
+                }
+                else
+                {
+                    Console.WriteLine("Your cars was declined");
+                }
+            }
+            else if (cost <= paymentAmount)
             {
                 if (cost == paymentAmount)
                 {
@@ -194,9 +212,9 @@ namespace SodaMachine
             Functions.TransferCoin(sodaMachine.nickel, customer.wallet.nickel, coins[2], sodaMachine.payment, customer.wallet.coin);
             Functions.TransferCoin(sodaMachine.penny, customer.wallet.penny, coins[3], sodaMachine.payment, customer.wallet.coin);
         }
-        private void CardToCard()
+        private void CardToCard(double price)
         {
-
+            Functions.TransferCard(customer.wallet.card, sodaMachine.card, price);
         }
     }
 }
