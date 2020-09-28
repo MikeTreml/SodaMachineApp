@@ -19,18 +19,8 @@ namespace SodaMachine
             backpack = new Backpack();
         }
         //member methods
-        
-        public void ShowCustomersStuff(Customer customer)
-        {
-            Console.BackgroundColor = ConsoleColor.Gray;
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
-            string title = "\nCustomer Inventory               ";
-            int[] sodaQty = Functions.CanListCount(backpack.can);
-            int[] coinQty = Functions.CoinListCount(wallet.coin);
-            UserInterface.CustomerInventoryDisplay(sodaQty, coinQty, title);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.White;
-        }
+       
+
 
     }
 }

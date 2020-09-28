@@ -17,7 +17,7 @@ namespace SodaMachine
                 to.Add(coin);
             }
         }
-        // need to overload this method. I can send it Sodamachine.coins to wallet. but if i am pulling wallet.coins i am never 
+        // needed to overload this method. I can send it Sodamachine.coins to wallet. but if i am pulling wallet.coins i am never 
         //pulling the Sodamachine.coins. so i need to got through one extra step and add in the coin type for wallet and sodamachine
         public static void TransferCoin(Coin coinFrom, Coin coinTo, int number, List<Coin> from, List<Coin> to)
         {

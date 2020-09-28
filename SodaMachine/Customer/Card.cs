@@ -10,11 +10,21 @@ namespace SodaMachine
     {
         //member Variables 
         protected double availableFunds;
-        public double AvailableFunds { get { return availableFunds; } }
+        public double AvailableFunds 
+        { 
+            get 
+            { 
+                return availableFunds; 
+            }
+            set
+            {
+                availableFunds = value;
+            }
+        }
         //Constructor
         public Card()
         {
-            this.availableFunds = 1.33;
+            
         }
         //member methods
     }

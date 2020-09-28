@@ -20,6 +20,7 @@ namespace SodaMachine
         public OrangeSoda orangeSoda;
         public RootBeer rootBeer;
         public Cola cola;
+        public Card card;
 
         //Constructor
         public SodaMachine()
@@ -27,6 +28,7 @@ namespace SodaMachine
             inventory = new List<Can>();
             register = new List<Coin>();
             payment = new List<Coin>();
+            card = new Card();
             fillSodaMachine();
         }
         //member methods
@@ -48,17 +50,7 @@ namespace SodaMachine
             Functions.CreateCoins(nickel, 20, register);//20
             Functions.CreateCoins(penny, 50, register);//50
         }
-        public void ShowSodaMachineStuff()
-        {
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            string title = "\nThe Soda Machine inventory";
-            int[] sodaQty = Functions.CanListCount(inventory);
-            int[] coinQty = Functions.CoinListCount(register);
-            double payment = paymentTotal();
-            UserInterface.SodaMachineInventoryDisplay(sodaQty, coinQty, title, payment);
-            Console.ForegroundColor = ConsoleColor.White;
-
-        }
+       
         public void Menu()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -77,6 +69,6 @@ namespace SodaMachine
             paymentTotal = paymentArray[0] * quarter.Value + paymentArray[1] * dime.Value + paymentArray[2] * nickel.Value + paymentArray[3] * penny.Value;
             return paymentTotal;
         }
-
+        
     }
 }

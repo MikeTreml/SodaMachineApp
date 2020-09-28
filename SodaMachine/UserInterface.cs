@@ -44,18 +44,7 @@ namespace SodaMachine
             Console.WriteLine(" 3 Orange Soda");
            
         }
-        public static void CoinInput()
-        {
-            Console.WriteLine("Please enter the number of coins you want put in the Soda Machine");
-        }
-        public static void Menu(double cola, double rootBeer, double OrangeSoda)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(" Cola        $" + cola);
-            Console.WriteLine(" Root Beer   $" + rootBeer);
-            Console.WriteLine(" Orange Soda $" + OrangeSoda);
-            Console.ForegroundColor = ConsoleColor.White;
-        }
+       
 
         public static void SodaMachineInventoryDisplay(int[] sodaQty, int[] coinQty, string title,double payment)
         {
@@ -81,12 +70,40 @@ namespace SodaMachine
             Console.WriteLine(" Orange Soda " + sodaQty[2] + "      Nickels: " + coinQty[2] + "     ");
             Console.WriteLine("                    Penny: " + coinQty[3] + "      ");
             Console.WriteLine("           Total Amount: $" + total + "  \n");
+            
 
         }
 
-      
-        
-        
+        public static void ShowCustomersStuff(Customer customer)
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            string title = "\nCustomer Inventory               ";
+            int[] sodaQty = Functions.CanListCount(customer.backpack.can);
+            int[] coinQty = Functions.CoinListCount(customer.wallet.coin);
+            UserInterface.CustomerInventoryDisplay(sodaQty, coinQty, title);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void ShowSodaMachineStuff(SodaMachine sodaMachine)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            string title = "\nThe Soda Machine inventory";
+            int[] sodaQty = Functions.CanListCount(sodaMachine.inventory);
+            int[] coinQty = Functions.CoinListCount(sodaMachine.register);
+            double payment = sodaMachine.paymentTotal();
+            UserInterface.SodaMachineInventoryDisplay(sodaQty, coinQty, title, payment);
+            Console.ForegroundColor = ConsoleColor.White;
+
+        }
+        public static string LeaveSodaMachine() 
+        {
+            string input;
+            Console.WriteLine("please press q to leave");
+            input = Console.ReadLine();
+            return input.ToLower();
+        }
 
     }
 }

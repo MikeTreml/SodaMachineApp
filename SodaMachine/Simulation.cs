@@ -26,7 +26,7 @@ namespace SodaMachine
                 sodaMachine.Menu();
                 UserInterface.ShowCustomersStuff(customer);
                 PickPaymentType();
-                
+
                 //Console.Clear(); //comment this for deguging for history of transactions
                 UserInterface.ShowSodaMachineStuff(sodaMachine);
                 UserInterface.ShowCustomersStuff(customer);
@@ -37,7 +37,7 @@ namespace SodaMachine
             } while (leave != "q");
 
         }
-        private void PickPaymentType() 
+        private void PickPaymentType()
         {
             switch (UserInterface.InputVerificationNumbers(1, 2, "Please pick paymet type 1 for card 2 for coins."))
             {
@@ -45,31 +45,20 @@ namespace SodaMachine
                     ChoosingPayInput();
                     break;
                 case 2:
-                    ChoosingPayInput(0);
+                    ChoosingPayInput(Functions.CoinListCount(customer.wallet.coin));
                     break;
 
             }
         }
         private void ChoosingPayInput()
         {
-            ////UserInterface.CoinInput();
-            ////int[] coinCount = Functions.CoinListCount(customer.wallet.coin);
-            ////int[] coinPayment = { 0, 0, 0, 0 };
+            //Card Payment
 
-
-            ////coinPayment[0] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[0], "How many quater(s):");
-            ////coinPayment[1] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[1], "How many dime(s):");
-            ////coinPayment[2] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[2], "How many nickel(s):");
-            ////coinPayment[3] = UserInterface.InputVerificationNumbers(lowestnumber, coinCount[3], "How many penny(s):");
-            ////WalletToPayment(coinPayment);
         }
-        private void ChoosingPayInput(Customer wallet)
+        private void ChoosingPayInput(int[] coinCount)
         {
-            UserInterface.CoinInput();
-            int[] coinCount = Functions.CoinListCount(customer.wallet.coin);
             int[] coinPayment = { 0, 0, 0, 0 };
             int lowestNumber = 0;
-
 
             coinPayment[0] = UserInterface.InputVerificationNumbers(lowestNumber, coinCount[0], "How many quater(s):");
             coinPayment[1] = UserInterface.InputVerificationNumbers(lowestNumber, coinCount[1], "How many dime(s):");
@@ -100,7 +89,7 @@ namespace SodaMachine
         {
             int[] coinPayment = Functions.CoinListCount(sodaMachine.payment);
             int[] sodaSelect = { 0, 0, 0 };
-            
+
             double[] sodaPrices = { sodaMachine.cola.Cost, sodaMachine.rootBeer.Cost, sodaMachine.orangeSoda.Cost };
             Can[] soda = { sodaMachine.cola, sodaMachine.rootBeer, sodaMachine.orangeSoda };
 
@@ -149,7 +138,7 @@ namespace SodaMachine
             double tempValueRefund;
             //int[] countCount = sodaMachine.CoinListCount();
             int[] countCountRegister = Functions.CoinListCount(sodaMachine.register);
-            int[] coins = {0,0,0,0 };
+            int[] coins = { 0, 0, 0, 0 };
 
             coins[0] = (int)Math.Floor(refund / sodaMachine.quarter.Value);
             if (coins[0] > countCountRegister[0]) { coins[0] = countCountRegister[0]; }
@@ -167,7 +156,7 @@ namespace SodaMachine
             if (coins[3] > countCountRegister[3]) { coins[3] = countCountRegister[3]; }
             tempValueRefund = Math.Round(tempValueRefund - coins[3] * sodaMachine.penny.Value, 2);
 
-            if (tempValueRefund != 0) { Console.WriteLine("Refund Error "+ tempValueRefund); }
+            if (tempValueRefund != 0) { Console.WriteLine("Refund Error " + tempValueRefund); }
             return coins;
         }
         private void InventoryToBackPack(int[] soda)
@@ -205,5 +194,9 @@ namespace SodaMachine
             Functions.TransferCoin(sodaMachine.nickel, customer.wallet.nickel, coins[2], sodaMachine.payment, customer.wallet.coin);
             Functions.TransferCoin(sodaMachine.penny, customer.wallet.penny, coins[3], sodaMachine.payment, customer.wallet.coin);
         }
+        private void CardToCard()
+        {
+
         }
+    }
 }

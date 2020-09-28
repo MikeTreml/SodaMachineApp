@@ -26,7 +26,7 @@ namespace SodaMachine
         }
         void FillWallet() 
         {
-            card = new Card();
+           
             quarter = new Quarter();
             dime = new Dime();
             nickel = new Nickel();
@@ -35,6 +35,7 @@ namespace SodaMachine
             Functions.CreateCoins(dime, 17, coin);
             Functions.CreateCoins(nickel, 8, coin);
             Functions.CreateCoins(penny, 83, coin);
+            card.AvailableFunds = 1.32;
         }
         //member methods
         
